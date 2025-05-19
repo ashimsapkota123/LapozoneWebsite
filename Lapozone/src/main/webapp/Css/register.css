@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Body with background image */
+.sab-bodyrrr {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0px;
+  background: url('../images/laptopbg.jpg') no-repeat center center/cover;
+  background-size: cover;
+  position: relative;
+}
+
+/* Container with transparent background and blur effect */
+.sab-container {
+  max-width: 700px; /* Increased from 510px */
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px; /* Increased padding */
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+
+/* Title styling */
+.sab-container .sab-title {
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+
+.sab-container .sab-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+/* Form styling */
+.sab-content form .sab-user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+
+form .sab-user-details .sab-input-box {
+  margin-bottom: 15px;
+  width: calc(50% - 20px); /* Adjusted width for responsiveness */
+}
+
+form .sab-input-box span.details {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+/* Input styling */
+.sab-user-details .sab-input-box input {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.sab-user-details .sab-input-box input:focus,
+.sab-user-details .sab-input-box input:valid {
+  border-color: #9b59b6;
+}
+
+/* Role category styling */
+form .sab-role-details .sab-role-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+form .sab-category {
+  display: flex;
+  width: 80%;
+  margin: 14px 0;
+  justify-content: space-evenly;
+}
+
+form .sab-category label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+form .sab-category label .sab-dot {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+
+/* Checked radio button styling */
+#sab-dot-1:checked ~ .sab-category label .one,
+#sab-dot-2:checked ~ .sab-category label .two,
+#sab-dot-3:checked ~ .sab-category label .three {
+  background: #9b59b6;
+  border-color: #d9d9d9;
+}
+
+form input[type="radio"] {
+  display: none;
+}
+
+/* Submit button styling */
+form .sab-button {
+  height: 45px;
+  margin: 35px 0;
+}
+
+form .sab-button input {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #466297, #40c4b8);
+}
+
+form .sab-button input:hover {
+  transform: scale(0.99);
+  background: linear-gradient(135deg, #40c4b8, #466297);
+}
+
+
+/* Mobile responsiveness */
+@media(max-width: 584px) {
+  .sab-container {
+    max-width: 100%;
+  }
+  
+  form .sab-user-details .sab-input-box {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  form .sab-category {
+    width: 100%;
+  }
+  
+  .sab-content form .sab-user-details {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  
+  .sab-user-details::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+@media(max-width: 459px) {
+  .sab-container .sab-content .sab-category {
+    flex-direction: column;
+  }
+}

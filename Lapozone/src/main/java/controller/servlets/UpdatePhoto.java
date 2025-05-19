@@ -1,0 +1,65 @@
+package controller.servlets;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import controller.DatabaseController;
+import model.UsersModel;
+import util.StringUtils;
+
+@MultipartConfig
+@WebServlet(asyncSupported = true, urlPatterns = { "/UpdatePhoto" })
+public class UpdatePhoto extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	private final DatabaseController dbController = new DatabaseController();
+
+	public UpdatePhoto() {
+		super();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		HttpSession userSession = request.getSession();
+		String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
+
+		Part image = request.getPart("profileImage");
+		String imageFilename = image.getSubmittedFileName();
+
+		String uploadPath = "C:\\Users\\acer\\eclipse-workspace\\Lapozone\\src\\main\\webapp\\images\\" + imageFilename;
+		String DataBase_img_url = request.getContextPath() + "/images/" + imageFilename;
+
+		try (InputStream is = image.getInputStream();
+			 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(uploadPath))) {
+			byte[] data = new byte[is.available()];
+			is.read(data);
+			bos.write(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		UsersModel user = new UsersModel(DataBase_img_url, userId);
+		int result = dbController.addusersimg(user);
+
+		if (result == 1) {
+			response.sendRedirect(request.getContextPath() + "/ProfileServlet?success=true");
+		} else if (result == 0) {
+			request.getRequestDispatcher(StringUtils.REGISTER_PAGE).forward(request, response);
+		} else {
+			request.setAttribute(StringUtils.ERROR_VAL, StringUtils.SERVER_NOT);
+			request.getRequestDispatcher(StringUtils.REGISTER_PAGE).forward(request, response);
+		}
+	}
+}
