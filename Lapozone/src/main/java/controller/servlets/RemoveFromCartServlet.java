@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.DatabaseController;
+import controller.Dao.CartDAO;
 
 /**
  * Servlet implementation class RemoveFromCartServlet
@@ -24,7 +25,7 @@ public class RemoveFromCartServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	private final DatabaseController dbController = new DatabaseController();
+	private final CartDAO cartDAO = new CartDAO();
 
 	/**
 	 * Constructs a new RemoveFromCartServlet instance.
@@ -45,7 +46,7 @@ public class RemoveFromCartServlet extends HttpServlet {
 
 		String productId = request.getParameter("productId");
 
-		int rowsAffected = dbController.deletecart(productId);
+		int rowsAffected = cartDAO.deletecart(productId);
 
 		if (rowsAffected > 0) {
 			response.sendRedirect(request.getContextPath() + "/DisplayToCart");
@@ -53,7 +54,7 @@ public class RemoveFromCartServlet extends HttpServlet {
 
 		else {
 
-			response.sendRedirect("/pages/home.jsp");
+			response.sendRedirect("${pageContext.request.contextPath}/pages/home.jsp");
 		}
 
 	}

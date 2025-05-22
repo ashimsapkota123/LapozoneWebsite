@@ -13,18 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.DatabaseController;
+import controller.Dao.ProductDAO;
 import util.StringUtils;
 
 @WebServlet("/DeleteProductByAdmin")
 public class DeleteProductByAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final DatabaseController dbController;
+	private final ProductDAO productDao;
 
 	/**
 	 * Constructs a new DeleteProductByAdmin servlet instance.
 	 */
 	public DeleteProductByAdmin() {
-		this.dbController = new DatabaseController();
+		this.productDao = new ProductDAO();
 
 	}
 
@@ -67,7 +68,7 @@ public class DeleteProductByAdmin extends HttpServlet {
 		String productId = req.getParameter(StringUtils.PROD_ID);
 
 		// Delete the product and get the result
-		int result = dbController.deleteProductInfo(productId);
+		int result = productDao.deleteProductInfo(productId);
 
 		// Debugging: Print productId and result to console
 		System.out.println("Product ID: " + productId);

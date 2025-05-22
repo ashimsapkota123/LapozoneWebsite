@@ -31,6 +31,16 @@
     
 
   <div class="arb-conmir-container">
+     <a href="${pageContext.request.contextPath}/FetchProductForAdmin"><button class="arb-back-p">Back</button></a>
+
+    <div class="arb-conmir-logo-container">
+        <div class="arb-conmir-company-name">Update Product &#128722;</div>
+    </div>
+
+    <!-- Display error message if exists -->
+    <c:if test="${not empty errorMessage}">
+        <div style="color:red; margin-bottom: 15px;">${errorMessage}</div>
+    </c:if>
 
     <!-- Your other HTML content -->
 
@@ -149,10 +159,11 @@
                         <textarea id="pfeat" class="arb-conmir-textarea" rows="10" placeholder="Enter Phone Features" style="resize:none;" name="pfeat" required>${product.features}</textarea>
 
                     </div>
+                     </c:if>
 
                 </div>
 
-            </c:if>
+           
 
             <button type="submit" class="arb-conmir-button">UPDATE</button>
 

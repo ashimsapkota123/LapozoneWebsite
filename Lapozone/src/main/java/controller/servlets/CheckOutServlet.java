@@ -11,79 +11,72 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import controller.DatabaseController;
+import controller.Dao.CartDAO;
+import controller.Dao.ProductDAO;
 import model.CartsModel;
 import model.ProductsModel;
 import util.StringUtils;
 
 @WebServlet("/CheckOutServlet")
 public class CheckOutServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private final DatabaseController dbController = new DatabaseController();
+    private static final long serialVersionUID = 1L;
+    private final ProductDAO productDao = new ProductDAO();
+    private final CartDAO cartDao = new CartDAO();
+    
 
-	public CheckOutServlet() {
-		super();
-	}
+    public CheckOutServlet() {
+        super();
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		// Retrieving user session and user ID
-		HttpSession userSession = request.getSession();
-		String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
+        HttpSession userSession = request.getSession();
+        String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
 
-		// Ensure no null or extra whitespace
-		if (userId != null) {
-			userId = userId.trim();
-		} else {
-			System.out.println("User ID is null. Cannot proceed to checkout.");
-			response.sendRedirect("login.jsp");  // Or any fallback page
-			return;
-		}
+        if (userId != null) {
+            userId = userId.trim();
+        } else {
+            System.out.println("User ID is null. Cannot proceed to checkout.");
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
-		String total = request.getParameter(StringUtils.TOTAL_VAL);
-		String cardId = "";
+        String total = request.getParameter(StringUtils.TOTAL_VAL);
+        String cardId = "";
 
-		// Fetch user's cart
-		List<CartsModel> cartItems = dbController.getCartProduct(userId);
-		ArrayList<ProductsModel> chooseproductsInCart = new ArrayList<>();
+        List<CartsModel> cartItems = cartDao.getCartProduct(userId);
 
-		for (CartsModel cartItem : cartItems) {
-			String productId = cartItem.getProductId();
-			String quantity = cartItem.getQuantity();
-			cardId = cartItem.getCartId();
+        // Check for empty cart
+        if (cartItems == null || cartItems.isEmpty()) {
+            System.out.println("Cart is empty. Redirecting to cart page.");
+            request.setAttribute("errorMessage", "Your cart is empty. Please add items before proceeding to checkout.");
+            request.getRequestDispatcher("/pages/cart-list.jsp").forward(request, response); // ensure cart.jsp is the correct path
+            return;
+        }
 
-			ArrayList<ProductsModel> product = dbController.getProductbyID(productId);
-			for (ProductsModel p : product) {
-				p.setquantity(quantity);
-			}
-			chooseproductsInCart.addAll(product);
-		}
+        ArrayList<ProductsModel> chooseproductsInCart = new ArrayList<>();
 
-		// Log cart contents
-		if (chooseproductsInCart.isEmpty()) {
-			System.out.println("The cart is empty.");
-		} else {
-			System.out.println("Checkout includes " + chooseproductsInCart.size() + " products.");
-		}
+        for (CartsModel cartItem : cartItems) {
+            String productId = cartItem.getProductId();
+            String quantity = cartItem.getQuantity();
+            cardId = cartItem.getCartId();
 
-		// Set data for confirmation page
-		request.setAttribute("chooseproductsInCart", chooseproductsInCart);
-		request.setAttribute("grandTotal", total);
-		userSession.setAttribute("cardId", cardId);
+            ArrayList<ProductsModel> product = productDao.getProductbyID(productId);
+            for (ProductsModel p : product) {
+                p.setquantity(quantity);
+            }
+            chooseproductsInCart.addAll(product);
+        }
 
-		// ✅ Clear the cart after checkout
-		System.out.println("User ID in CheckOutServlet: " + userId);
-		boolean isCleared = false;
-		try {
-			isCleared = dbController.clearCart(userId);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Cart cleared? " + isCleared);
+        request.setAttribute("chooseproductsInCart", chooseproductsInCart);
+        request.setAttribute("grandTotal", total);
+        userSession.setAttribute("cardId", cardId);
 
-		// Forward to order confirmation page
-		request.getRequestDispatcher(StringUtils.ORDER_CONFIRM).forward(request, response);
-	}
+        boolean isCleared = false;
+        isCleared = cartDao.clearCart(userId);
+
+        System.out.println("Cart cleared? " + isCleared);
+        request.getRequestDispatcher(StringUtils.ORDER_CONFIRM).forward(request, response);
+    }
 }

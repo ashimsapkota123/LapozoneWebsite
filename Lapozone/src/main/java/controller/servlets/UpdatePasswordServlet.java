@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import util.StringUtils;
 
 @WebServlet(urlPatterns = { "/UpdatePasswordServlet" })
 public class UpdatePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
 
 	/**
 	 * Constructs a new UpdatePasswordServlet instance.
@@ -61,7 +62,7 @@ public class UpdatePasswordServlet extends HttpServlet {
 			return;
 		}
 
-		int passChangeResult = dbController.changeLoginInfo(userID, currentPass, newPass);
+		int passChangeResult = userDao.changeLoginInfo(userID, currentPass, newPass);
 
 		if (passChangeResult == 1) {
 

@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.DatabaseController;
+import controller.Dao.ProductDAO;
 import model.ProductsModel;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/ProductDetailServlet" })
 public class ProductDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final ProductDAO productDao = new ProductDAO();
 
 	/**
 	 * Constructs a new ProductDetailServlet instance.
@@ -40,7 +41,7 @@ public class ProductDetailServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String productIde = request.getParameter("product_");
 
-		List<ProductsModel> matchedProducts = dbController.getProductbyID(productIde);
+		List<ProductsModel> matchedProducts = productDao.getProductbyID(productIde);
 		// if else lagayeracheck garna parx if product not found redirection
 
 		request.setAttribute("MatchingProducts", matchedProducts);

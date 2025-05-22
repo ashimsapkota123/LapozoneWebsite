@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import model.UsersModel;
 import util.StringUtils;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/RegisterServlet" })
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
 
 	public RegisterServlet() {
 		super();
@@ -77,9 +78,9 @@ public class RegisterServlet extends HttpServlet {
 		}
 
 		// Duplicacy check
-		if (dbController.checkDuplicacy(userID, StringUtils.CHECK_DUP_ID)
-				|| dbController.checkDuplicacy(email, StringUtils.CHECK_DUP_EMAIL)
-				|| dbController.checkDuplicacy(phoneNumber, StringUtils.CHECK_DUP_NUMBER)) {
+		if (userDao.checkDuplicacy(userID, StringUtils.CHECK_DUP_ID)
+				|| userDao.checkDuplicacy(email, StringUtils.CHECK_DUP_EMAIL)
+				|| userDao.checkDuplicacy(phoneNumber, StringUtils.CHECK_DUP_NUMBER)) {
 
 			request.setAttribute(StringUtils.ERROR_VAL, StringUtils.DUPLICACY_NON);
 			request.getRequestDispatcher(StringUtils.REGISTER_PAGE).forward(request, response);
@@ -88,7 +89,7 @@ public class RegisterServlet extends HttpServlet {
 
 		// Add user
 		UsersModel userModel = new UsersModel(userID, fullName.toUpperCase(), email, password, phoneNumber, role);
-		int result = dbController.addUser(userModel);
+		int result = userDao.addUser(userModel);
 
 		if (result == 1) {
 			response.sendRedirect(request.getContextPath() + StringUtils.LOGIN_PAGE);

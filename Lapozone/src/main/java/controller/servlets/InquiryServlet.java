@@ -1,7 +1,4 @@
-/**
- * InquiryServlet handles user inquiries.
- * This servlet is responsible for receiving inquiries via HTTP POST method.
- */
+
 package controller.servlets;
 
 import java.io.IOException;
@@ -16,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import model.InquiryModel;
 import util.StringUtils;
 
@@ -24,7 +21,7 @@ import util.StringUtils;
 public class InquiryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
 
 	/**
 	 * Constructs a new InquiryServlet instance.
@@ -63,7 +60,7 @@ public class InquiryServlet extends HttpServlet {
 		String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		InquiryModel inq = new InquiryModel(inquiryID, userId, subject, createdAt, message);
 
-		int result = dbController.addUserInquiry(inq);
+		int result = userDao.addUserInquiry(inq);
 
 		System.out.println(result);
 		// Handling the result of adding the inquiry
@@ -71,14 +68,14 @@ public class InquiryServlet extends HttpServlet {
 
 			String errorMessage = "Your Message is Sucessfully Delivered !!!";
 			request.setAttribute(StringUtils.ERROR_VAL, errorMessage);
-			request.getRequestDispatcher("/pages/about.jsp").forward(request, response);
+			request.getRequestDispatcher("/pages/contact.jsp").forward(request, response);
 
 		} else if (result == 0) {
 			// If adding the inquiry fails, set error message attribute and forward to about
 			// page
 			String errorMessage = "Something Went Wrong Please Try Again Later !!!";
 			request.setAttribute(StringUtils.ERROR_VAL, errorMessage);
-			request.getRequestDispatcher("/pages/about.jsp").forward(request, response);
+			request.getRequestDispatcher("/pages/contact.jsp").forward(request, response);
 
 		} else {
 			// If there is an unexpected error, redirect to logout servlet

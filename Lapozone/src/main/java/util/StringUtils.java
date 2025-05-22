@@ -64,9 +64,9 @@ public class StringUtils {
 	public static final String DUPLICACY_NON = "Check UserId, Email, or PhoneNumber which already exists!";
 
 	// Delete product admin productId
-	public static final String PROD_ID = "productId";
-	public static final String ADMIN_FETCH_PROD = "/FetchProductForAdmin";
-	public static final String PRODUCT_VIEW_PAGE = "/pages/product_view.jsp";
+    public static final String PROD_ID = "productId";
+    public static final String ADMIN_FETCH_PROD = "/FetchProductForAdmin";
+    public static final String PRODUCT_VIEW_PAGE = "/pages/product_view.jsp";
 	public static final String CART_VIEW_PAGE = "/pages/cart-list.jsp";
 	
 	// For addproducts servlet
@@ -148,7 +148,12 @@ public class StringUtils {
 	public static final String TOTAL_VAL = "grandTotal";
 	public static final String ORDER_CONFIRM = "/pages/order_confirm.jsp";
 
-
+	public static final String CART_VIEW_PAGE1 = "/pages/cartView.jsp";
+    public static final String ADMIN_MANAGE_USER = "/ManageUserServlet";
+    public static final String EDIT_USER = "/EditUserServlet";
+    public static final String DELETE_USER = "/DeleteUserServlet";
+    public static final String USER_MANAGE_PAGE = "/pages/UserManage.jsp";
+    public static final String USER_EDIT_PAGE = "/pages/EditUser.jsp";
 
 
 }

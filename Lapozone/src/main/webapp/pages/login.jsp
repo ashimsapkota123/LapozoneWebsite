@@ -48,6 +48,7 @@
         <p style="text-align: center; margin-bottom:10px;">Don't have a Lapozone account? <a href="${pageContext.request.contextPath}/pages/register.jsp">Sign up</a></p>
         
       </form>
+      
     </div>
   </div>
 </div>

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.CartDAO;
+import controller.Dao.ProductDAO;
 import model.ProductsModel;
 import util.StringUtils;
 
@@ -22,7 +24,9 @@ import util.StringUtils;
 public class FetchProdutsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final ProductDAO productDAO = new ProductDAO();
+	private final CartDAO cartDao = new CartDAO();
+	
 
 	/**
 	 * Constructs a new FetchProdutsServlet instance.
@@ -31,15 +35,6 @@ public class FetchProdutsServlet extends HttpServlet {
 		super();
 
 	}
-
-	/**
-	 * Handles HTTP GET requests sent to the servlet for fetching products.
-	 * Retrieves user session and user ID. Retrieves cart item count for the user
-	 * and sets it in the session. Retrieves search keyword from request parameters.
-	 * Searches for products based on the keyword and retrieves matching products
-	 * from the database. Forwards the product list and search keyword to the home
-	 * page (home.jsp).
-	 */
 	 @Override
 	    protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
@@ -47,18 +42,19 @@ public class FetchProdutsServlet extends HttpServlet {
 	        HttpSession userSession = request.getSession();
 
 	        String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
-	        int cartItemCount = dbController.getCartItemCount(userId);
+	        int cartItemCount = cartDao.getCartItemCount(userId);
 	        userSession.setAttribute("itemCount", cartItemCount);
+	        
 
 	        String keyword = request.getParameter("keyword");
 	        List<ProductsModel> products;
 
 	        if (keyword == null || keyword.trim().isEmpty()) {
-	            products = dbController.getAllProductInfo(); // Load all products
+	            products = productDAO.getAllProductInfo(); // Load all products
 	            request.setAttribute("search_keyword", "");
 	        } else {
 	            String searchPattern = "%" + keyword + "%";
-	            products = dbController.getProductbySearch(searchPattern);
+	            products = productDAO.getProductbySearch(searchPattern);
 	            request.setAttribute("search_keyword", keyword);
 	        }
 

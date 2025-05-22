@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import controller.DatabaseController;
+import controller.Dao.OrderDAO;
+import controller.Dao.UserDAO;
 import model.CustomerTransaction;
 import model.OrdersModel;
 import util.StringUtils;
@@ -20,7 +21,8 @@ import util.StringUtils;
 public class ShowingAdminDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
+	private final OrderDAO orderDao = new OrderDAO();
 
 	public ShowingAdminDetails() {
 		super();
@@ -33,21 +35,21 @@ public class ShowingAdminDetails extends HttpServlet {
 
 		String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
 		
-		String full_name = dbController.getFirstNameByUsername(userId);
+		String full_name = userDao.getFirstNameByUsername(userId);
 		
 		request.setAttribute("fullName", full_name);
 
 		ArrayList<OrdersModel> orders = getAllOrders();
 
-		List<CustomerTransaction> listings = dbController.getAllOrdersDetails();
+		List<CustomerTransaction> listings = orderDao.getAllOrdersDetails();
 
 		request.setAttribute("orders", orders);
 
-		int orderItemCount = dbController.getOrderCount();
+		int orderItemCount = orderDao.getOrderCount();
 
-		int pendingCount = dbController.getPendingCount();
+		int pendingCount = orderDao.getPendingCount();
 
-		int deliveredCount = dbController.getdeliveredCount();
+		int deliveredCount = orderDao.getdeliveredCount();
 
 		request.setAttribute("listings", listings);
 

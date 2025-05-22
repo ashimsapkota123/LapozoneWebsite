@@ -28,9 +28,9 @@
         <h5>Front-end Developer</h5>
         <p>I am Bishesh Lamichanne, a Front-end Developer skilled in creating responsive and interactive web interfaces. I focus on HTML, CSS, JavaScript, and modern frameworks to deliver seamless user experiences. I believe in clean code, design harmony, and continuous learning to enhance the frontend development process.
 .</p>
-        <div class="data"><a href="#"><button class="but">Connect</button></a></div>
+        
       </div>
-      <div class="image-placeholder"><img src="../images/bishesh2.jpg" class="image-placeholder"></div>
+      <div class="image-placeholder"><img src="../images/bishesh.jpg" class="image-placeholder"></div>
     </div>
 
     <!-- Backend Developer -->
@@ -41,7 +41,7 @@
         <h5>Back-end Developer</h5>
         <p>I am Asim Sapkota, a Backend Developer focused on creating robust server-side solutions. I work with databases, APIs, and security protocols to ensure smooth backend operations. I'm passionate about scalable systems and love solving complex problems through backend logic and optimization.
 </p>
-        <div class="data"><a href="#"><button class="but">Connect</button></a></div>
+        
       </div>
       <div class="image-placeholder"><img src="../images/Ashim.jpg" class="image-placeholder"></div>
     </div>
@@ -54,7 +54,7 @@
         <h5>Database Specialist</h5>
         <p>I am Sayal Adhikari, a Database Specialist with a passion for managing and optimizing relational databases. I ensure data integrity, design efficient schemas, and write performant queries. My goal is to maintain a secure and well-structured data layer for the application.
 </p>
-        <div class="data"><a href="#"><button class="but">Connect</button></a></div>
+        
       </div>
       <div class="image-placeholder"><img src="../images/sayal.jpg" class="image-placeholder"></div>
     </div>
@@ -67,7 +67,7 @@
         <h5>UI/UX Designer</h5>
         <p>I am Kushal Subedi, a UI/UX Designer who focuses on crafting user-centric interfaces. I specialize in wireframing, prototyping, and user research. My mission is to create seamless and intuitive user experiences that align with user behavior and brand identity.
 </p>
-        <div class="data"><a href="#"><button class="but">Connect</button></a></div>
+        
       </div>
       <div class="image-placeholder"><img src="../images/kusal.jpg" class="image-placeholder"></div>
     </div>
@@ -80,11 +80,23 @@
         <h5>Graphic Designer</h5>
         <p>I am Sumit Chettri, a Graphic Designer skilled in visual storytelling and brand representation. I work with colors, typography, and layouts to design impactful graphics that elevate the brand image and engage the audience.
 </p>
-        <div class="data"><a href="#"><button class="but">Connect</button></a></div>
+        
       </div>
       <div class="image-placeholder"></div>
     </div>
 
+    <!-- Software Tester -->
+    <div class="person">
+      <div class="image-placeholder"><img src="../images/kale.jpg" class="image-placeholder"></div>
+      <div class="text">
+        <h2>Sandip Sharma</h2>
+        <h5>Software Tester</h5>
+        <p>I am Sandip Sharma, a Software Tester responsible for ensuring software quality through comprehensive testing and validation. I perform manual and automated testing to identify bugs and improve functionality. I aim to deliver reliable and bug-free applications to enhance user satisfaction.
+</p>
+        
+      </div>
+      <div class="image-placeholder"></div>
+    </div>
 
   </div>
 </section>

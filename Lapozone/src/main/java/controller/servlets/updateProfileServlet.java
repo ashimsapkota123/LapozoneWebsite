@@ -1,67 +1,75 @@
+/**
+ * Servlet implementation class updateProfileServlet
+ * updateProfileServlet handles the updating of user profiles.
+ * This servlet processes requests to update user profile details via HTTP PUT method.
+ */
 package controller.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import model.UsersModel;
+import util.StringUtils;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/updateProfileServlet" })
 public class updateProfileServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
 
-    public updateProfileServlet() {
-        super();
-    }
+	/**
+	 * Constructs a new updateProfileServlet instance.
+	 */
+	public updateProfileServlet() {
+		super();
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Disallow GET method for update profile
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported.");
-    }
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processUpdate(request, response);
-    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-    private void processUpdate(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	}
 
-        HttpSession session = request.getSession();
+	/**
+	 * Handles HTTP POST requests sent to the servlet for updating user profiles.
+	 * Forwards the request to the doPut method for processing.
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        String userID = request.getParameter("useride");
-        String fullName = request.getParameter("fulName");
-        String address = request.getParameter("addre");
+		String userID = request.getParameter("useride");
+		String fullName = request.getParameter("fulName");
+		String Address = request.getParameter("addre");
 
-        // Validate input
-        if (userID == null || fullName == null || address == null ||
-            userID.trim().isEmpty() || fullName.trim().isEmpty() || address.trim().isEmpty()) {
+		UsersModel usermodel = new UsersModel(userID, fullName, Address);
 
-            session.setAttribute("errorVal", "Please fill all required fields.");
-            response.sendRedirect(request.getContextPath() + "/ProfileServlet");
-            return;
-        }
+		int result = userDao.userProfileUpdate(usermodel);
 
-        UsersModel usermodel = new UsersModel(userID, fullName, address);
+		if (result == 1) {
 
-        int result = dbController.userProfileUpdate(usermodel);
+			String successMessage = "Profile Sucessfully Updated";
 
-        if (result == 1) {
-            session.setAttribute("messageSuccess", "Profile Successfully Updated");
-            response.sendRedirect(request.getContextPath() + "/ProfileServlet");
-        } else {
-            session.setAttribute("errorVal", "Failed to update profile. Please try again.");
-            response.sendRedirect(request.getContextPath() + "/ProfileServlet");
-        }
-    }
+			request.getSession().setAttribute(StringUtils.ERROR_VAL, successMessage);
+
+			response.sendRedirect(request.getContextPath() + "/ProfileServlet?success=true");
+
+		} else if (result == 0) {
+
+			request.getRequestDispatcher("/ProfileServlet").forward(request, response);
+
+		} else {
+
+			response.sendRedirect(request.getContextPath() + "/LogoutServlet");
+		}
+
+	}
+
+
 }

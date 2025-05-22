@@ -43,12 +43,15 @@ public class AuthenticationFilter implements Filter {
         boolean orderlistservlet = uri.endsWith("/ShowingAdminDetails");
         boolean Product_detail_admin = uri.endsWith("/Product_detail_admin");
         boolean ShowingAdminDetails = uri.endsWith("/ShowingAdminDetails");
-
+        boolean ManageUserServlet = uri.endsWith("/ManageUserServlet") || uri.endsWith("/EditUserServlet") || uri.endsWith("/DeleteUserServlet");
         boolean adminOnly_page = isOrderListPage || isCustomerMailPage || isMailListPage || isProductViewPage
                 || isProductDetailAdminPage || isAddProductPage || ShowingAdminDetails || AddProductServlet_
                 || fetchforadminservlet || deleteproductbyadmin || updateproductbyadmin || Product_detail_admin
-                || sentproducttoadmin || adminjsppage;
-
+                || sentproducttoadmin || adminjsppage|| ManageUserServlet;
+        boolean InquiryListServlet = uri.endsWith("/InquiryListServlet");
+        boolean adminOnlypage = isOrderListPage || isCustomerMailPage || ShowingAdminDetails || AddProductServlet_ ||
+                         fetchforadminservlet || deleteproductbyadmin || updateproductbyadmin ||  Product_detail_admin ||
+                         sentproducttoadmin ||  adminjsppage || ManageUserServlet || InquiryListServlet;
         boolean isStaticResource = uri.startsWith("/css/") || uri.startsWith("/js/") || uri.startsWith("/images/");
         if (isStaticResource || uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".jpg")) {
             chain.doFilter(request, response); // Skip filtering for static resources

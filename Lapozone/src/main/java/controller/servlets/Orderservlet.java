@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.CartDAO;
+import controller.Dao.OrderDAO;
 import model.CartsModel;
 import model.Order_products;
 import model.OrdersModel;
@@ -25,7 +27,8 @@ import util.StringUtils;
 public class Orderservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final OrderDAO orderDao = new OrderDAO();
+	private final CartDAO cartDao = new CartDAO();
 
 	/**
 	 * Constructs a new Orderservlet instance.
@@ -64,13 +67,13 @@ public class Orderservlet extends HttpServlet {
 
 		OrdersModel orders = new OrdersModel(orderid, userId, total, status, city, address, pay);
 
-		int orderResult = dbController.addOrder(orders);
+		int orderResult = orderDao.addOrder(orders);
 
 		if (orderResult != 1) {
 			return;
 		}
 
-		List<CartsModel> cartDetails = dbController.getCartDetail(cardId);
+		List<CartsModel> cartDetails = cartDao.getCartDetail(cardId);
 
 		boolean success = true;
 
@@ -80,7 +83,7 @@ public class Orderservlet extends HttpServlet {
 
 			Order_products ordersprod = new Order_products(orderid, productId, Linequantity);
 
-			int lineItemResult = dbController.addOrderLineItem(ordersprod);
+			int lineItemResult = orderDao.addOrderLineItem(ordersprod);
 
 			if (lineItemResult != 1) {
 				success = false;

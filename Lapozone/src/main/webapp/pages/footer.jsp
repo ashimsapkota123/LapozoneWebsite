@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <footer class="footer">
   <div class="footer-container">
@@ -33,11 +34,11 @@
       <div class="footer-column">
         <h4>Follow Us</h4>
         <div class="social-links">
-          <a href="#"><i class="fa fa-facebook-f"></i></a>
-          <a href="#"><i class="fa fa-twitter"></i></a>
-          <a href="#"><i class="fa fa-instagram"></i></a>
-          <a href="#"><i class="fa fa-linkedin-in"></i></a>
-        </div>
+			  <a href="#"><i class="fab fa-facebook-f"></i></a>
+			  <a href="#"><i class="fab fa-twitter"></i></a>
+			  <a href="#"><i class="fab fa-instagram"></i></a>
+			  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+			</div>
       </div>
     </div>
   </div>

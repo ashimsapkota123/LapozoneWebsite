@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import model.UsersModel;
 import util.StringUtils;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/ProfileServlet" })
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
 
 	public ProfileServlet() {
 		super();
@@ -58,13 +59,13 @@ public class ProfileServlet extends HttpServlet {
 
 		String noServer = (String) request.getSession().getAttribute("noserver");
 		if (noServer != null) {
-			request.setAttribute("noser", successMessagenopass);
+			request.setAttribute("noser", noServer); 
 			request.getSession().removeAttribute("noserver");
 
 		}
 
-		List<UsersModel> userDetails = dbController.getProfileInfo(userId);
-		String img_Url = dbController.getPhotoLink(userId);
+		List<UsersModel> userDetails = userDao.getProfileInfo(userId);
+		String img_Url = userDao.getPhotoLink(userId);
 		System.out.println(img_Url);
 
 		request.setAttribute("imgUsers", img_Url);

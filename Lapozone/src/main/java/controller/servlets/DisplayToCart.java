@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.CartDAO;
+import controller.Dao.ProductDAO;
 import model.CartsModel;
 import model.ProductsModel;
 import util.StringUtils;
@@ -20,7 +22,8 @@ import util.StringUtils;
 public class DisplayToCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final CartDAO cartDao = new CartDAO();
+	private final ProductDAO productDao = new ProductDAO();
 
 	public DisplayToCart() {
 		super();
@@ -35,7 +38,7 @@ public class DisplayToCart extends HttpServlet {
 
 		System.out.println("userId: " + userId);
 
-		List<CartsModel> cartItems = dbController.getCartProduct(userId);
+		List<CartsModel> cartItems = cartDao.getCartProduct(userId);
 
 		ArrayList<ProductsModel> productsInCart = new ArrayList<>();
 
@@ -54,7 +57,7 @@ public class DisplayToCart extends HttpServlet {
 
 			userSession.setAttribute("productId", productId);
 
-			ArrayList<ProductsModel> product = dbController.getProductbyID(productId);
+			ArrayList<ProductsModel> product = productDao.getProductbyID(productId);
 
 			for (ProductsModel p : product) {
 				p.setquantity(quantity);

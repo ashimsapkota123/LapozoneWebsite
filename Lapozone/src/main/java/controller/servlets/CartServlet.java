@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.CartDAO;
 import model.CartsModel;
 import util.StringUtils;
 
@@ -18,7 +19,7 @@ import util.StringUtils;
 public class CartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	// DatabaseController instance for database interactions
-	private final DatabaseController dbController = new DatabaseController();
+	private final CartDAO cardDao = new CartDAO();
 
 	/**
 	 * Constructs a new CartServlet instance.
@@ -45,7 +46,7 @@ public class CartServlet extends HttpServlet {
 		String quantity = request.getParameter(StringUtils.QUANT);
 
 		// Checking for duplicate products in the cart
-		if (dbController.checkDuplicacyy(userId, productId, StringUtils.CHECK_DUP_CART)) {
+		if (cardDao.checkDuplicacyy(userId, productId, StringUtils.CHECK_DUP_CART)) {
 			String errorMessage = StringUtils.CART_ERROR_MSG;
 			request.setAttribute("error", errorMessage);
 			request.getRequestDispatcher(StringUtils.SINGLE_PAGE_PROD).forward(request, response);
@@ -54,7 +55,7 @@ public class CartServlet extends HttpServlet {
 		// Creating a CartsModel object for the new cart item
 		CartsModel cartmodel = new CartsModel(cartId, userId, productId, quantity);
 		// Adding the product to the user's cart
-		int result = dbController.addProductsCart(cartmodel);
+		int result = cardDao.addProductsCart(cartmodel);
 
 		HttpSession adminSession = request.getSession();
 		// Handling redirection based on the result of adding the product to the cart
@@ -65,10 +66,11 @@ public class CartServlet extends HttpServlet {
 			// change later
 
 		} else if (result == 0) {
+			
 
 			request.getRequestDispatcher(StringUtils.REDIRECT_SERVLET).forward(request, response);
 
-			// change later } else {
+		} else {
 
 			String errorMessage = StringUtils.SERVER_NOT;
 			request.setAttribute(StringUtils.ERROR_VAL, errorMessage);

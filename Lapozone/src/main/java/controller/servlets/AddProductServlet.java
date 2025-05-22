@@ -1,6 +1,5 @@
 package controller.servlets;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import controller.DatabaseController;
+import controller.Dao.ProductDAO;
 import model.ProductsModel;
 import util.StringUtils;
 
@@ -22,9 +21,12 @@ import util.StringUtils;
 public class AddProductServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final DatabaseController dbController = new DatabaseController();
+    private final ProductDAO productDao = new ProductDAO();
 
-    @Override
+    public AddProductServlet() {
+        super();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -39,72 +41,71 @@ public class AddProductServlet extends HttpServlet {
         String warranty = request.getParameter(StringUtils.PWAR);
         String discountStr = request.getParameter(StringUtils.PDIS);
         String features = request.getParameter(StringUtils.PFEAT);
-        Part imagePart = request.getPart(StringUtils.PIMG);
+        Part image = request.getPart(StringUtils.PIMG);
 
-        // Validate required fields
-        if (productId == null || productName == null || priceStr == null || discountStr == null
-                || screenSize == null || ram == null || processor == null || battery == null
-                || storage == null || warranty == null || features == null || imagePart == null) {
-            request.setAttribute(StringUtils.ERROR_VAL, "All fields are required.");
-            request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
-            return;
-        }
+        String imageFilename = image.getSubmittedFileName();
+        String uploadPath = "C:\\Users\\acer\\eclipse-workspace\\Lapozone\\src\\main\\webapp\\images\\" + imageFilename;
+        String DataBase_img_url = request.getContextPath() + "/images/" + imageFilename;
 
-        // Parse price and discount safely
-        Double price = null;
-        Double discount = null;
-        try {
-            price = Double.parseDouble(priceStr.trim());
-            discount = Double.parseDouble(discountStr.trim());
-        } catch (NumberFormatException nfe) {
-            request.setAttribute(StringUtils.ERROR_VAL, "Price and Discount must be valid numbers.");
-            request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
-            return;
-        }
 
-        double discountAmount = (price * discount) / 100;
-
-        // Handle image upload
-        String imageFilename = imagePart.getSubmittedFileName();
-        String uploadDirectory = getServletContext().getRealPath("/images");
-        File uploadDir = new File(uploadDirectory);
-        if (!uploadDir.exists()) uploadDir.mkdirs();
-
-        String uploadPath = uploadDirectory + File.separator + imageFilename;
-        String databaseImageUrl = "images/" + imageFilename;
-
-        try (InputStream inputStream = imagePart.getInputStream();
-             FileOutputStream outputStream = new FileOutputStream(uploadPath)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
+        try (
+        		FileOutputStream fos = new FileOutputStream(uploadPath); 
+        		InputStream is = image.getInputStream()) {
+            byte[] data = new byte[is.available()];
+            is.read(data);
+            fos.write(data);
+            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute(StringUtils.ERROR_VAL, "Failed to save image file.");
-            request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
-            return;
         }
 
-        // Create product object
-        ProductsModel product = new ProductsModel(
-                productId, productName, screenSize, processor, ram, features,
-                discount, storage, warranty, price, discountAmount, databaseImageUrl
-        );
+        Double price = null;
+        Double discount = null;
 
-        // Insert into database
-        int result = dbController.addProducts(product);
+       
+
+			try {
+			    if (priceStr != null && !priceStr.isEmpty()) {
+			        price = Double.parseDouble(priceStr);
+			    }
+			} catch (NumberFormatException e) {
+			    request.setAttribute("errorMessage", "Invalid price value. Please enter a numeric value.");
+			    request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
+			    return;
+			}
+			
+			try {
+			    if (discountStr != null && !discountStr.isEmpty()) {
+			        discount = Double.parseDouble(discountStr);
+			    }
+			} catch (NumberFormatException e) {
+			    request.setAttribute("errorMessage", "Invalid discount value. Please enter a numeric value.");
+			    request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
+			    return;
+			}
+
+        Double discountAmount = (price * discount) / 100.0;
+
+        ProductsModel product = new ProductsModel(productId, productName, screenSize, processor, ram, features,
+                discount, storage, warranty, price, discountAmount, DataBase_img_url);
+
+        int result = productDao.addProducts(product);
 
         if (result == 1) {
-            request.getRequestDispatcher(StringUtils.ADMIN_HOME).forward(request, response);
-        } else {
-            String errorMessage = (result == 0)
-                    ? "Product already exists or could not be added."
-                    : StringUtils.SERVER_NOT;
 
-            request.setAttribute(StringUtils.ERROR_VAL, errorMessage);
-            request.getRequestDispatcher("/pages/add_product.jsp").forward(request, response);
+			request.getRequestDispatcher(StringUtils.ADMIN_HOME).forward(request, response);
+			// need to change
+
+		} else if (result == 0) {
+
+			request.getRequestDispatcher(StringUtils.REGISTER_PAGE).forward(request, response);
+			// need to change
+
+		} else {
+
+			String errorMessage = StringUtils.SERVER_NOT;
+			request.setAttribute(StringUtils.ERROR_VAL, errorMessage);
+			request.getRequestDispatcher(StringUtils.REGISTER_PAGE).forward(request, response);
         }
     }
 }

@@ -10,12 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.UserDAO;
 import util.StringUtils;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final DatabaseController dbController = new DatabaseController();
+    private final UserDAO userDao = new UserDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,7 +25,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter(StringUtils.PASS_FIELD);
 
         // Fetch login result: 1 = Admin, 2 = User, 3/4/0 = failure codes
-        int loginResult = dbController.getUserLoginInfo(userId, password);
+        int loginResult = userDao.getUserLoginInfo(userId, password);
         
 
         HttpSession session = request.getSession();
@@ -35,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute(StringUtils.SESSION_DATA, userId);
             session.setAttribute("role", "admin");
             session.setMaxInactiveInterval(30 * 60);
-            response.sendRedirect(request.getContextPath() + "/pages/adminDashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/pages/admin_sidebar.jsp");
 
         } else if (loginResult == 2) {
             session.setAttribute(StringUtils.ISADMIN, false);

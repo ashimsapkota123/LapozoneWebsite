@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.ProductDAO;
+import controller.Dao.UserDAO;
 import model.ProductsModel;
 import util.StringUtils;
 
@@ -18,7 +20,9 @@ import util.StringUtils;
 public class FetchProductForAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final UserDAO userDao = new UserDAO();
+	private final ProductDAO productDAO = new ProductDAO();
+	
 
 	public FetchProductForAdmin() {
 		super();
@@ -31,12 +35,12 @@ public class FetchProductForAdmin extends HttpServlet {
 		
 		String userId = (String) userSession.getAttribute(StringUtils.SESSION_DATA);
 		
-		String full_name = dbController.getFirstNameByUsername(userId);
+		String full_name = userDao.getFirstNameByUsername(userId);
 		
 		request.setAttribute("fullName", full_name);
 
 
-		List<ProductsModel> allProducts = dbController.getAllProductInfo();
+		List<ProductsModel> allProducts = productDAO.getAllProductInfo();
 
 		System.out.println("product size is" + allProducts.size());
 

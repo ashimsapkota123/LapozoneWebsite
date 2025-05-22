@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.DatabaseController;
+import controller.Dao.ProductDAO;
 import model.ProductsModel;
 
 @WebServlet("/ProductIdSent")
 public class ProductIdSent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final DatabaseController dbController = new DatabaseController();
+	private final ProductDAO productDao = new ProductDAO();
 
 	public ProductIdSent() {
 		super();
@@ -36,7 +37,7 @@ public class ProductIdSent extends HttpServlet {
 
 		System.out.println("updatefield" + updateid);
 
-		ArrayList<ProductsModel> selectedProducts = dbController.getProductbyID(updateid);
+		ArrayList<ProductsModel> selectedProducts = productDao.getProductbyID(updateid);
 
 		System.out.println("size is " + selectedProducts.size());
 

@@ -6,10 +6,11 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+body{
+  background: url('../images/laptopbg.jpg') no-repeat center center/cover;
 
-body {
-  background-color: #283b76;
 }
+
 
  .logout-btn {
         
@@ -30,15 +31,17 @@ body {
     
 /* Hero */
 .hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: url('../images/laptopbg.jpg') no-repeat center center/cover;
+  background-size: cover;
   position: relative;
-  min-height: 100vh;
-  width: 100%;
-  background: url(images/bg-dot.png), url(images/bg-dot.png),
-    url(images/bg-round.png), url(images/bg-tree.png);
-  background-position: 10px 10px, bottom 215px right 10px, left 55% top -1%,
-    left 45% bottom -1px;
-  background-repeat: no-repeat;
 }
+
+
 .curveImg {
   position: absolute;
   bottom: 0;

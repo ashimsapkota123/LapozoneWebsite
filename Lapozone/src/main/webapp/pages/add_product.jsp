@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,66 +14,80 @@
 <section class="arb-mid-mir">
   <div class="arb-conmir-container">
     <a href="${pageContext.request.contextPath}/FetchProductForAdmin"><button class="arb-back-p">Back</button></a>
+
     <div class="arb-conmir-logo-container">
         <div class="arb-conmir-company-name">Add Product &#128722;</div>
     </div>
 
-    <div class="arb-conmir-form-container">
-        <% String error = (String) request.getAttribute("error"); %>
-        <% if (error != null) { %>
-            <div style="color: red; font-weight: bold; margin-bottom: 15px;"><%= error %></div>
-        <% } %>
+    <!-- Display error message if exists -->
+    <c:if test="${not empty errorMessage}">
+        <div style="color:red; margin-bottom: 15px;">${errorMessage}</div>
+    </c:if>
 
+    <div class="arb-conmir-form-container">
         <form action="${pageContext.request.contextPath}/AddProductServlet" method="post" enctype="multipart/form-data">
             <div class="arb-conmir-form-grid">
+
                 <div>
                     <label for="pID" class="arb-conmir-label">Product ID:</label>
-                    <input type="text" id="pID" class="arb-conmir-input" name="pID" required>
+                    <input type="text" id="pID" class="arb-conmir-input" placeholder="Enter Product ID" name="pID" required>
                 </div>
+
                 <div>
                     <label for="pname" class="arb-conmir-label">Product Name:</label>
-                    <input type="text" id="pname" class="arb-conmir-input" name="pname" required>
+                    <input type="text" id="pname" class="arb-conmir-input" placeholder="Enter Product Name" name="pname" required>
                 </div>
+
                 <div>
                     <label for="pprice" class="arb-conmir-label">Price:</label>
-                    <input type="text" id="pprice" class="arb-conmir-input" name="pprice" required>
+                    <input type="text" id="pprice" class="arb-conmir-input" placeholder="Enter Price" name="pprice" required>
                 </div>
+
                 <div>
                     <label for="psize" class="arb-conmir-label">Screen Size:</label>
-                    <input type="text" id="psize" class="arb-conmir-input" name="psize" required>
+                    <input type="text" id="psize" class="arb-conmir-input" placeholder="Enter Screen Size" name="psize" required>
                 </div>
+
                 <div>
                     <label for="pram" class="arb-conmir-label">Ram:</label>
-                    <input type="text" id="pram" class="arb-conmir-input" name="pram" required>
+                    <input type="text" id="pram" class="arb-conmir-input" placeholder="Enter RAM" name="pram" required>
                 </div>
+
                 <div>
                     <label for="pproc" class="arb-conmir-label">Processor:</label>
-                    <input type="text" id="pproc" class="arb-conmir-input" name="pproc" required>
+                    <input type="text" id="pproc" class="arb-conmir-input" placeholder="Enter Processor" name="pproc" required>
                 </div>
+
                 <div>
                     <label for="pimage" class="arb-conmir-label">Product Image:</label>
-                    <input type="file" id="pimage" class="arb-conmir-upload" name="pimage" accept="image/*" required>
+                    <input type="file" id="pimage" name="pimage" accept="image/*" class="arb-conmir-upload" required>
                 </div>
+
                 <div>
                     <label for="pbat" class="arb-conmir-label">Battery:</label>
-                    <input type="text" id="pbat" class="arb-conmir-input" name="pbat" required>
+                    <input type="text" id="pbat" class="arb-conmir-input" placeholder="Enter Battery" name="pbat" required>
                 </div>
+
                 <div>
                     <label for="pstor" class="arb-conmir-label">Storage:</label>
-                    <input type="text" id="pstor" class="arb-conmir-input" name="pstor" required>
+                    <input type="text" id="pstor" class="arb-conmir-input" placeholder="Enter Phone Storage" name="pstor" required>
                 </div>
+
                 <div>
                     <label for="pwar" class="arb-conmir-label">Warranty:</label>
-                    <input type="text" id="pwar" class="arb-conmir-input" name="pwar" required>
+                    <input type="text" id="pwar" class="arb-conmir-input" placeholder="Is Warranty Available?" name="pwar" required>
                 </div>
+
                 <div>
                     <label for="pdis" class="arb-conmir-label">Discount %:</label>
-                    <input type="text" id="pdis" class="arb-conmir-input" name="pdis" required>
+                    <input type="text" id="pdis" class="arb-conmir-input" placeholder="Enter Discount" name="pdis" required>
                 </div>
+
                 <div>
                     <label for="pfeat" class="arb-conmir-label">Features:</label>
-                    <textarea id="pfeat" class="arb-conmir-textarea" name="pfeat" rows="10" required></textarea>
+                    <textarea id="pfeat" class="arb-conmir-textarea" rows="10" placeholder="Enter Phone Features" style="resize:none;" name="pfeat" required></textarea>
                 </div>
+
             </div>
             <button type="submit" class="arb-conmir-button">ADD</button>
         </form>

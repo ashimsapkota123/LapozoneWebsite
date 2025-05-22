@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import controller.DatabaseController;
+import controller.Dao.ProductDAO;
 import model.ProductsModel;
 
 /**
@@ -31,7 +32,7 @@ public class UpdateProductServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	DatabaseController dbController = new DatabaseController();
+	ProductDAO  productDao = new ProductDAO();
 
 	/**
 	 * Constructs a new UpdateProductServlet instance.
@@ -103,7 +104,7 @@ public class UpdateProductServlet extends HttpServlet {
 
 		System.out.println("name of file " + imageFilename);
 
-		String uploadPath = "C:\\Users\\acer\\eclipse-workspace\\Lapozone\\src\\main\\webapp\\images" + imageFilename;
+		String uploadPath =  "C:\\Users\\acer\\eclipse-workspace\\Lapozone\\src\\main\\webapp\\images\\"+ imageFilename;
 		String DataBase_img_url = request.getContextPath() + "/images/" + imageFilename;
 		
 		FileOutputStream fos = new FileOutputStream(uploadPath);
@@ -154,7 +155,7 @@ public class UpdateProductServlet extends HttpServlet {
 		System.out.println("Discount Amount: " + updatedProduct.getDiscountAmount());
 		System.out.println("Database Image URL: " + updatedProduct.getImageUrl());
 
-		int success = dbController.updateProductById(productId, updatedProduct);
+		int success = productDao.updateProductById(productId, updatedProduct);
 
 		System.out.println("int: " + success);
 

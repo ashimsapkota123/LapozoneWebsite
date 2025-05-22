@@ -18,12 +18,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/Css/all.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
+
 <body>
 
     <!-- nav bar start -->
     <jsp:include page="header.jsp" />
     <!-- nav bar ends -->
-
+ 
     <!-- Hero Section -->
     <section class="hero">
         <div class="row container">
@@ -32,10 +33,11 @@
                 <p>Welcome to Lapozone: Your Laptop Growth Hub! Explore our curated tools and extensions to boost your business. From productivity to marketing, Lapozone has you covered.</p>
                 <div class="buttons">
                     <a href="#redirect-products" class="btn" id="shopbtn">Shop Now</a>
-                    <button class="btn">Contact Us</button>
+                    <a href="${pageContext.request.contextPath}/pages/about.jsp#con-redd"><button
+							class="btn">Contact Us</button></a>
                 </div>
             </div>
-        </div>
+		</div>
     </section>
 
     <!-- Product Section -->
@@ -48,8 +50,10 @@
         
         <form method="get" class="searchbar" action="${pageContext.request.contextPath}/FetchProdutsServlet">
             <div class="input-box">
-                <input type="text" name="keyword" placeholder="Search here..." value="${searchKeyword}" />
-                <button type="submit" class="button">Search</button>
+            <i class="uil uil-search"></i> 
+                <input id="searchInput" type="text" name="keyword" placeholder="Search here..."
+               value="${empty search_keyword ? '' : search_keyword}" />
+				<button type="submit" class="button">Search</button>
             </div>
         </form>
 

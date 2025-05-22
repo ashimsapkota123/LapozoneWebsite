@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Lapozone | Admin</title>
 
 </head>
 
 <body>
-   
+
 <div class="sidebar">
       <div class="side-header">
         <h3>L<span>apozone</span></h3>
@@ -19,35 +19,41 @@
       <div class="side-content">
         <div class="profile">
          <h4>${fullName}</h4>
-          
+
 
         </div>
 
         <div class="side-menu">
           <ul>
-          
+
           <li>
               <a href="${pageContext.request.contextPath}/FetchProductForAdmin">
                 <span class="las la-mobile"></span>
                 <small> Products</small>
               </a>
             </li>
-            
+
             <li>
               <a href="${pageContext.request.contextPath}/ShowingAdminDetails">
                 <span class="las la-shopping-cart"></span>
                 <small>Orders</small>
               </a>
             </li>
-            
-            <li>
-              <a href="${pageContext.request.contextPath}/ManageUser">
-                <span class="las la-mobile"></span>
-                <small> Users</small>
-             </a>
-            </li>
 
+                   <li>
+              <a href="${pageContext.request.contextPath}/ManageUserServlet">
+                 <span class="las la-mobile"></span>
+                <small> Users Manage </small>
+               </a>
+            </li>
             
+              <li>
+              <a href="${pageContext.request.contextPath}/InquiryServlet">
+                <span class="las la-comment"></span>
+                <small>Customer Inquiry</small>
+              </a>
+            </li> 
+
 
           </ul>
         </div>

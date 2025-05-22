@@ -9,6 +9,43 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/Css/admin.css" />
   <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" />
 </head>
+<style>
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dev-act {
+  background-color: #007bff; /* Default blue */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Update button */
+form[action$="ProductIdSent"] .dev-act {
+  background-color: #28a745; /* Green */
+}
+
+/* View button */
+form[action$="Product_detail_admin"] .dev-act {
+  background-color: #17a2b8; /* Teal */
+}
+
+/* Delete button */
+form[action$="DeleteProductByAdmin"] .dev-act {
+  background-color: #dc3545; /* Red */
+}
+
+/* Hover effects */
+.dev-act:hover {
+  opacity: 0.9;
+}
+</style>
 <body>
   <input type="checkbox" id="menu-toggle" />
   <jsp:include page="admin_sidebar.jsp" />
@@ -62,23 +99,26 @@
                       <td>${product.discount}</td>
                       <td>RS ${product.price}</td>
                       <td>
-                        <div class="actions">
-                          <form action="${pageContext.request.contextPath}/ProductIdSent" method="post">
-                            <input type="hidden" name="productId" value="${product.productID}">
-                            <button type="submit" class="dev-act">
-                              <span class="las la-edit"></span>
-                            </button>
-                          </form>
-                          <a href="${pageContext.request.contextPath}/Product_detail_admin?productId=${product.productID}" class="dev-act">
-                            <span class="las la-eye"></span>
-                          </a>
-                          <form action="${pageContext.request.contextPath}/DeleteProductByAdmin" method="post" id="deleteForm-${product.productID}">
-                            <input type="hidden" name="productId" value="${product.productID}">
-                            <button type="submit" class="dev-act" onclick="confirmDelete('${product.productID}')">
-                              <span class="las la-trash-alt"></span>
-                            </button>
-                          </form>
-                        </div>
+                       <div class="actions">
+  <!-- Update Button -->
+					  <form action="${pageContext.request.contextPath}/ProductIdSent" method="post">
+					    <input type="hidden" name="productId" value="${product.productID}">
+					    <button type="submit" class="dev-act">Update</button>
+					  </form>
+					<br>
+					  <!-- View Button -->
+					  <form action="${pageContext.request.contextPath}/Product_detail_admin" method="get">
+					    <input type="hidden" name="productId" value="${product.productID}">
+					    <button type="submit" class="dev-act">View</button>
+					  </form>
+					<br>
+					  <!-- Delete Button -->
+					  <form action="${pageContext.request.contextPath}/DeleteProductByAdmin" method="post" id="deleteForm-${product.productID}">
+					    <input type="hidden" name="productId" value="${product.productID}">
+					    <button type="submit" class="dev-act" onclick="return confirmDelete('${product.productID}')">Delete</button>
+					  </form>
+					</div>
+
                       </td>
                     </tr>
                   </c:forEach>
